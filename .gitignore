@@ -24,3 +24,6 @@ venv/
 .idea/
 .vscode/
 .DS_Store
+
+# MkDocs build output
+site/

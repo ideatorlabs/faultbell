@@ -1,4 +1,4 @@
-"""Turning a captured exception (or a finished job run) into a transport-neutral :class:`Card`."""
+"""Turning a captured exception (or a finished job run) into a transport-neutral ``Card``."""
 
 from __future__ import annotations
 

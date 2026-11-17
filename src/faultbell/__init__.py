@@ -39,7 +39,7 @@ from .transports import Delivery, DiscordTransport, JsonWebhookTransport, Transp
 def reset() -> None:
     """Forget settings, de-duplication state and counters, and stop the sender thread.
 
-    Meant for tests; ``install()`` hooks stay in place (use :func:`uninstall` for those).
+    Meant for tests; ``install()`` hooks stay in place (use ``uninstall`` for those).
     """
     _sender.reset_state()
     _config.reset_settings()

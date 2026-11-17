@@ -4,7 +4,7 @@ The context lives in a ``ContextVar`` that holds a small mutable *box* around an
 Writes replace the mapping (copy-on-write) but keep the box. The box matters for web frameworks that
 run sync dependencies in a thread pool: each worker runs on a *copy* of the request's context, but every
 copy points at the same box, so a ``set_context()`` made in a dependency is visible to the rest of the
-request. The request middleware and :func:`context` give each request/block a fresh box and restore the
+request. The request middleware and ``context`` give each request/block a fresh box and restore the
 previous one on exit.
 """
 

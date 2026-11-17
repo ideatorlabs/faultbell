@@ -1,7 +1,7 @@
 """Channels beyond Discord: Slack, Microsoft Teams, Google Chat, Telegram, PagerDuty, email and your own
-function. Each one is a :class:`~faultbell.transports.Transport`; list several and every card goes to all
-of them (see :func:`faultbell.configure` ``channels=`` or the ``FAULTBELL_*`` variables read by
-:func:`channels_from_env`).
+function. Each one is a ``Transport``; list several and every card goes to all
+of them (see ``faultbell.configure`` ``channels=`` or the ``FAULTBELL_*`` variables read by
+``channels_from_env``).
 
 Everything here uses the standard library only. Card text arrives already scrubbed.
 """
@@ -468,8 +468,8 @@ class EmailTransport(Transport):
 class CallbackTransport(Transport):
     """Hand each card to your function: SMS, a ticket system, a message queue, a log pipeline.
 
-    The function gets the :class:`~faultbell.Card` (``card.as_dict()`` is JSON-ready). Returning a
-    :class:`~faultbell.Delivery` reports its status; returning anything else counts as sent; raising
+    The function gets the ``Card`` (``card.as_dict()`` is JSON-ready). Returning a
+    ``Delivery`` reports its status; returning anything else counts as sent; raising
     counts as failed. It runs on Faultbell's sender thread, never in your request.
     """
 

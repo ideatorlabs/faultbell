@@ -160,7 +160,7 @@ def install(app: Any = None, *, service: str) -> None:
 
 
 def uninstall() -> None:
-    """Undo :func:`install` for the process (apps keep their middleware). Mostly for tests."""
+    """Undo ``install`` for the process (apps keep their middleware). Mostly for tests."""
     global _installed, _handler, _added_last_resort, _previous_sys_hook, _previous_thread_hook
     root = logging.getLogger()
     if _handler is not None:

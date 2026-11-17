@@ -1,11 +1,13 @@
-<p align="center"><img src="https://raw.githubusercontent.com/ideatorlabs/.github/main/assets/avatar.png" width="72" alt="Ideator Labs"></p>
+<p align="center"><a href="https://ideatorlabs.github.io/faultbell/"><img src="https://raw.githubusercontent.com/ideatorlabs/faultbell/main/docs/assets/brand/banner.png" alt="Faultbell: Exception alerts, wherever your team already looks. By Ideator Labs." width="100%"></a></p>
 <h1 align="center">Faultbell</h1>
 <p align="center"><b>Drop-in exception alerting for Python services and cron jobs: one readable, scrubbed alert per problem, sent to Discord, Slack, Teams, Google Chat, Telegram, PagerDuty, email or any webhook.</b><br><sub>An open-source package by <a href="https://github.com/ideatorlabs">Ideator Labs</a></sub></p>
 <p align="center">
   <a href="https://github.com/ideatorlabs/faultbell/actions/workflows/ci.yml"><img src="https://github.com/ideatorlabs/faultbell/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+<a href="https://ideatorlabs.github.io/faultbell/"><img src="https://img.shields.io/badge/docs-ideatorlabs.github.io%2Ffaultbell-F43F5E.svg" alt="Documentation"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License: Apache-2.0"></a>
   <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python 3.10+">
 </p>
+<p align="center"><b><a href="https://ideatorlabs.github.io/faultbell/">Documentation</a></b> · <a href="https://ideatorlabs.github.io/faultbell/#60-second-quickstart">Quickstart</a> · <a href="https://ideatorlabs.github.io/faultbell/reference/">API reference</a> · <a href="CHANGELOG.md">Changelog</a></p>
 
 ## Why it exists
 

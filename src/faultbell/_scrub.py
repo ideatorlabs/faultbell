@@ -97,7 +97,7 @@ def _patterns(key_prefixes: tuple[str, ...]) -> tuple[tuple[re.Pattern[str], Rep
 def scrub(text: str, *, key_prefixes: Iterable[str] | None = None) -> str:
     """Return ``text`` with secrets and personal data replaced.
 
-    ``key_prefixes`` defaults to the configured list (:data:`faultbell.config.DEFAULT_KEY_PREFIXES`
+    ``key_prefixes`` defaults to the configured list (``faultbell.config.DEFAULT_KEY_PREFIXES``
     unless you changed it).
     """
     if not text:

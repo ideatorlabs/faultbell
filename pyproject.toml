@@ -41,7 +41,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ideatorlabs/faultbell"
+Homepage = "https://ideatorlabs.github.io/faultbell/"
+Documentation = "https://ideatorlabs.github.io/faultbell/"
 Repository = "https://github.com/ideatorlabs/faultbell"
 Issues = "https://github.com/ideatorlabs/faultbell/issues"
 

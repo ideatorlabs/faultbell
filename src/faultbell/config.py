@@ -1,7 +1,7 @@
 """Settings and environment resolution.
 
 Everything has a sensible default and can be set two ways: environment variables (handy at deploy time)
-or :func:`configure` (handy in code and tests). Values passed to :func:`configure` win over environment
+or ``configure`` (handy in code and tests). Values passed to ``configure`` win over environment
 variables. Settings are read when an alert is captured or sent, so changing the environment at runtime
 takes effect immediately.
 """
@@ -53,7 +53,7 @@ EnvDetector = Callable[[], "str | None"]
 
 @dataclass
 class Settings:
-    """Runtime settings. Create or change them with :func:`configure`."""
+    """Runtime settings. Create or change them with ``configure``."""
 
     #: Webhook used in every environment (beats ``FAULTBELL_WEBHOOK_URL``).
     webhook_url: str | None = None
@@ -122,7 +122,7 @@ def configure(**changes: Any) -> Settings:
 
 
 def reset_settings() -> None:
-    """Back to defaults (used by :func:`faultbell.reset`)."""
+    """Back to defaults (used by ``faultbell.reset``)."""
     global _settings, _installed_service
     with _lock:
         _settings = Settings()

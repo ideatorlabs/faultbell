@@ -40,7 +40,7 @@ def _label(tenant: str | None, tenant_id: str | None, item: str | None) -> str:
 class JobRun:
     """One run of a job. Collects failures; the outermost run sends one card when it ends.
 
-    Create it with :func:`job_run`. Its methods never raise into the job.
+    Create it with ``job_run``. Its methods never raise into the job.
     """
 
     def __init__(self, job: str, total: int | None, noun: str, demo_ids: Iterable[Any] = ()) -> None:
@@ -180,7 +180,7 @@ class JobRun:
 
 
 class NestedRun:
-    """A :func:`job_run` inside another one: failures fold into the outer run, tagged with this job."""
+    """A ``job_run`` inside another one: failures fold into the outer run, tagged with this job."""
 
     def __init__(self, outer: JobRun, job: str) -> None:
         self.outer = outer
@@ -240,7 +240,7 @@ def job_failed(
 ) -> None:
     """An item in ``job`` failed, reported from code that has no run object.
 
-    Inside a :func:`job_run` it folds into the summary; outside one it sends a normal card.
+    Inside a ``job_run`` it folds into the summary; outside one it sends a normal card.
     """
     try:
         exc = exc if exc is not None else sys.exc_info()[1]

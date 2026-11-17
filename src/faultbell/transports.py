@@ -1,8 +1,8 @@
-"""Where cards go: the :class:`Transport` base class, Discord (the default) and a generic JSON webhook.
+"""Where cards go: the ``Transport`` base class, Discord (the default) and a generic JSON webhook.
 
 More channels (Slack, Microsoft Teams, Google Chat, Telegram, PagerDuty, email, your own function) live in
-:mod:`faultbell.channels`. Adding another means subclassing :class:`Transport` and implementing
-:meth:`Transport.encode` (HTTP) or overriding :meth:`Transport.send` (anything else).
+``faultbell.channels``. Adding another means subclassing ``Transport`` and implementing
+``Transport.encode`` (HTTP) or overriding ``Transport.send`` (anything else).
 """
 
 from __future__ import annotations
@@ -42,7 +42,7 @@ def http_post(
     timeout: float,
     headers: Mapping[str, str] | None = None,
 ) -> Delivery:
-    """POST with the standard library. HTTP errors become a :class:`Delivery`; network errors raise."""
+    """POST with the standard library. HTTP errors become a ``Delivery``; network errors raise."""
     request = urllib.request.Request(
         url,
         data=body,
@@ -100,7 +100,7 @@ class Transport:
         return bool(self.destination())
 
     def destination(self) -> str:
-        """Where this channel delivers; passed to :meth:`send` as ``url``."""
+        """Where this channel delivers; passed to ``send`` as ``url``."""
         return (self.url or "").strip()
 
     def __repr__(self) -> str:

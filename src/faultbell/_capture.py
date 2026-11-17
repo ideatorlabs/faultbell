@@ -22,7 +22,7 @@ _log = logging.getLogger("faultbell")
 
 REPORTED_MARK = "__faultbell_reported__"
 
-#: The job run currently collecting failures (see :mod:`faultbell.jobs`).
+#: The job run currently collecting failures (see ``faultbell.jobs``).
 active_run: contextvars.ContextVar[JobRun | None] = contextvars.ContextVar("faultbell_run", default=None)
 
 _CLIENT_ERROR_TYPES = ("RequestValidationError", "WebSocketRequestValidationError")
@@ -73,7 +73,7 @@ def route_of(asgi_scope: Mapping[str, Any] | None) -> tuple[str | None, str | No
 def capture(exc: BaseException, *, handled: bool = True, job: str | None = None) -> None:
     """Report an exception. Returns at once; sending happens on Faultbell's own thread.
 
-    Inside a :func:`~faultbell.job_run` a handled exception is folded into the run's summary
+    Inside a ``job_run`` a handled exception is folded into the run's summary
     card instead of producing its own.
     """
     capture_exception(exc, handled=handled, job=job)

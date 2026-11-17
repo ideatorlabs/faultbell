@@ -1,7 +1,7 @@
 """The background sender: a bounded queue, one daemon thread, de-duplication and rate limiting.
 
-Nothing here runs in the caller's thread except :func:`enqueue` (a non-blocking ``put``). A full queue,
-a webhook error or a timeout drops the alert and bumps a counter in :func:`stats`.
+Nothing here runs in the caller's thread except ``enqueue`` (a non-blocking ``put``). A full queue,
+a webhook error or a timeout drops the alert and bumps a counter in ``stats``.
 """
 
 from __future__ import annotations
@@ -64,7 +64,7 @@ def _bump(name: str) -> None:
 
 
 def stats() -> dict[str, int]:
-    """Counters since start (or the last :func:`reset`): queued, sent, suppressed, dropped, failed."""
+    """Counters since start (or the last ``reset``): queued, sent, suppressed, dropped, failed."""
     with _stats_lock:
         return dict(_stats)
 
