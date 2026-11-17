@@ -212,13 +212,13 @@ from faultbell.watch import Watch, WatchMiddleware
 
 app = FastAPI(title="stock-api")
 faultbell.install(app, service="stock-api")
-watch = Watch(memory_limit_mb=512)                 # or FAULTBELL_MEMORY_LIMIT_MB, or the cgroup limit
-app.add_middleware(WatchMiddleware, watch=watch)   # counts responses per route template
+watch = Watch(memory_limit_mb=512)  # or FAULTBELL_MEMORY_LIMIT_MB, or the cgroup limit
+app.add_middleware(WatchMiddleware, watch=watch)  # counts responses per route template
 
 
 @app.get("/stock/{item_id}")
 def stock(item_id: int) -> dict[str, int]:
-    raise HTTPException(status_code=503)          # three of these in 5 minutes -> one card
+    raise HTTPException(status_code=503)  # three of these in 5 minutes -> one card
 ```
 
 Call `watch.start()` at startup to run memory checks and the heartbeat on a daemon thread. For crash
