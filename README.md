@@ -40,7 +40,10 @@ traceback, without leaking secrets, flooding the channel or slowing your request
 - **Several channels at once**: one alert goes to all of them; a failing channel never blocks the others.
   Each channel can take only some alerts (e.g. PagerDuty and email for crashes, Slack for everything).
 - **Check your setup in one command**: `python -m faultbell test` sends a test alert to every channel.
-- **Zero dependencies** in the core (standard library only). FastAPI support is an optional extra.
+- **Server watch** (`faultbell.watch`): alerts for what an exception hook never sees: a burst of 5xx (or
+  many 4xx) on one route, memory above 80% of the container limit, and a process that died without a
+  clean shutdown (heartbeat), reported with its peak memory.
+- **Zero dependencies** in the core (standard library only). FastAPI and SQLAlchemy support are optional extras.
 
 ## Install
 
@@ -195,6 +198,43 @@ still get the alert. The `local` environment stays quiet on every channel unless
   `[STAGING]`. `local` never sends unless `FAULTBELL_SEND_LOCAL=1`, because a developer's `.env` often holds
   the production webhook.
 
+## Server watch
+
+Some failures never raise in your code: an endpoint that keeps answering 503, a process creeping toward its
+memory limit, or a container killed for using too much memory. `faultbell.watch` turns those into normal
+Faultbell cards.
+
+```python
+from fastapi import FastAPI, HTTPException
+
+import faultbell
+from faultbell.watch import Watch, WatchMiddleware
+
+app = FastAPI(title="stock-api")
+faultbell.install(app, service="stock-api")
+watch = Watch(memory_limit_mb=512)                 # or FAULTBELL_MEMORY_LIMIT_MB, or the cgroup limit
+app.add_middleware(WatchMiddleware, watch=watch)   # counts responses per route template
+
+
+@app.get("/stock/{item_id}")
+def stock(item_id: int) -> dict[str, int]:
+    raise HTTPException(status_code=503)          # three of these in 5 minutes -> one card
+```
+
+Call `watch.start()` at startup to run memory checks and the heartbeat on a daemon thread. For crash
+detection across restarts, give it a shared store: `Watch(store=SQLHeartbeatStore(engine))`
+(`pip install "faultbell[sqlalchemy]"`). It creates one small table, `faultbell_heartbeats`.
+
+| Check | Default | Change with |
+|---|---|---|
+| 5xx burst on one route | 3 in 5 minutes | `burst_5xx`, `window` |
+| 4xx burst on one route | 30 in 5 minutes | `burst_4xx`, `window` |
+| Memory | 80% of the limit | `memory_limit_mb`, `memory_alert_percent` |
+| Crash | no heartbeat for 150 s and no clean stop | `beat_every`, `dead_after`, `store` |
+| Repeat cards | one per check and route per 10 minutes | `quiet` |
+
+Health-check paths (`/health`, `/ready`, …) are never counted (`ignore_paths`).
+
 ## Configuration
 
 Environment variables (read on every alert, so runtime changes apply immediately):
@@ -293,6 +333,7 @@ uv venv .venv && uv pip install -p .venv -e ".[dev]"
 export FAULTBELL_WEBHOOK_URL=http://127.0.0.1:8765/ FAULTBELL_SEND_LOCAL=1
 python -m faultbell test                                  # one test alert to every channel
 .venv/bin/python examples/cron_job.py                     # one summary card for 5 tenants
+# server watch: uvicorn examples.server_watch:app, then 3x curl http://127.0.0.1:8000/stock/7
 uv pip install -p .venv uvicorn
 .venv/bin/uvicorn examples.fastapi_app:app                # then: curl -i http://127.0.0.1:8000/orders/0
 ```
@@ -306,7 +347,7 @@ uv venv .venv && uv pip install -p .venv -e ".[dev]"
 ```
 
 The suite never touches a real webhook: a `http.server` running in the test process plays the webhook, and
-the README's Python blocks and both examples are executed against it.
+the README's Python blocks and the examples are executed against it.
 
 ## Limitations and non-goals
 
@@ -322,7 +363,6 @@ the README's Python blocks and both examples are executed against it.
 
 ## Roadmap
 
-- A response watcher (bursts of 5xx/4xx per route) and a memory watermark card.
 - More channels on request (Opsgenie, SMS through a provider).
 - Optional shared de-duplication through Redis.
 

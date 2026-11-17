@@ -103,6 +103,7 @@ def test_every_readme_python_block_is_covered() -> None:
         "TelegramTransport(os.environ",
         "env_detectors",
         "NtfyTransport",
+        "WatchMiddleware",
     ]
     assert len(readme_blocks()) == len(markers)
     for marker in markers:
@@ -158,3 +159,26 @@ def test_readme_ntfy_block(live: FakeWebhook) -> None:
     assert push.body.decode() == "Café crashed"
     assert push.headers["title"] == "Unhandled ValueError in app"
     assert push.headers["priority"] == "high"
+
+
+def test_readme_server_watch_block(live: FakeWebhook) -> None:
+    app = run(block_with("WatchMiddleware"))["app"]
+    client = TestClient(app, raise_server_exceptions=False)  # type: ignore[arg-type]
+    for _ in range(3):
+        assert client.get("/stock/7").status_code == 503
+    faultbell.flush(5)
+    [card] = live.wait_for(1)
+    assert "ServerWatchAlert" in card.embed()["title"]
+    assert "3 5xx responses in 5 minutes on GET /stock/{item_id}" in str(card.embed())
+
+
+def test_server_watch_example(live: FakeWebhook) -> None:
+    module = load(EXAMPLES / "server_watch.py")
+    client = TestClient(module.app, raise_server_exceptions=False)
+    assert client.get("/stock/1").json() == {"item_id": 1, "on_hand": 12}
+    for _ in range(3):
+        assert client.get("/stock/7").status_code == 503
+    faultbell.flush(5)
+    [card] = live.wait_for(1)
+    assert "GET /stock/{item_id}" in str(card.embed())
+    module.watch.stop()

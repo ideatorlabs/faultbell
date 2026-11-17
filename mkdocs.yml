@@ -84,6 +84,7 @@ nav:
   - Home: index.md
   - Concepts: concepts.md
   - Channels: channels.md
+  - Server watch: watch.md
   - Configuration: configuration.md
   - Extending: extending.md
   - Development: development.md

@@ -14,6 +14,5 @@
 
 ## Roadmap
 
-- A response watcher (bursts of 5xx/4xx per route) and a memory watermark card.
 - More channels on request (Opsgenie, SMS through a provider).
 - Optional shared de-duplication through Redis.

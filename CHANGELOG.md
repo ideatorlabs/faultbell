@@ -6,6 +6,20 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-17
+
+### Added
+
+- `faultbell.watch`: server watch for problems an exception hook never sees.
+  - `Watch.record()` and the pure-ASGI `WatchMiddleware`: one alert when a route (counted by its template)
+    returns several 5xx (default 3) or many 4xx (default 30) responses within a window (default 5 minutes).
+  - `Watch.check_memory()`: alert above a share (default 80%) of the memory limit, read from the argument,
+    `FAULTBELL_MEMORY_LIMIT_MB` or the container's cgroup limit.
+  - Crash detection: a heartbeat per process; a process that stopped beating without a clean shutdown is
+    reported on the next start with its last-seen peak memory. `MemoryHeartbeatStore` and
+    `SQLHeartbeatStore` (any SQLAlchemy database, new `sqlalchemy` extra).
+  - `Watch.start()` runs memory checks and the heartbeat on a daemon thread; nothing ever raises.
+
 ## [0.1.0] - 2026-11-17
 
 ### Added
@@ -26,5 +40,6 @@ All notable changes to this project are documented here. The format follows
   (`configure(channels=...)`) or with one set of `FAULTBELL_*` variables per channel.
 - `python -m faultbell channels` and `python -m faultbell test` to check the setup.
 
-[Unreleased]: https://github.com/ideatorlabs/faultbell/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/ideatorlabs/faultbell/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/ideatorlabs/faultbell/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/ideatorlabs/faultbell/releases/tag/v0.1.0
